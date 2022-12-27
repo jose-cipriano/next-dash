@@ -1,0 +1,32 @@
+{
+    "name": "admin",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint",
+        "stylelint": "stylelint '**/*.js' --formatter verbose",
+        "format": "prettier --write \"**/*.{js,jsx,json,md}\""
+    },
+    "dependencies": {
+        "@emotion/react": "^11.10.5",
+        "@emotion/styled": "^11.10.5",
+        "@mui/material": "^5.11.0",
+        "@next/font": "13.0.7",
+        "dotenv": "^16.0.3",
+        "eslint": "8.30.0",
+        "eslint-config-next": "13.0.7",
+        "formik": "^2.2.9",
+        "next": "13.0.7",
+        "react": "18.2.0",
+        "react-dom": "18.2.0",
+        "styled-components": "^5.3.6",
+        "yup": "^0.32.11"
+    },
+    "devDependencies": {
+        "prettier": "^2.8.1",
+        "stylelint-config-standard": "^29.0.0"
+    }
+}
