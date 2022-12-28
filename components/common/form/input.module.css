@@ -1,6 +1,6 @@
 .container {
     position: relative;
-    margin: 0 auto;
+    margin: 0.5rem auto;
 }
 
 .wrapper {
@@ -24,16 +24,17 @@
 }
 
 .wrapper:focus-within {
-	border-color: 'var(--color-green)';
+	border-color: var(--color-green);
 }
 
 .error {
-	margin: .5rem 0;
-    padding: .5rem .8rem;
-    font-size: 1.2rem;
+	margin: .3rem 0 .5rem 0;
+    padding: 0 .8rem;
+    font-size: 1.1rem !important;
     font-weight: normal;
-    color: var(--color-grey);
+    color: var(--color-red);
     min-height: 14px;
+    height: 20px;
 }
 
 .styledError {
