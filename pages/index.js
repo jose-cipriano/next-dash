@@ -5,10 +5,15 @@ import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 import loginstyles from '../styles/Common.module.css'
 import Input from '../components/common/form/input'
-
-
+import { Formik, Form } from "formik";
+import { validationSchema } from "../utils/schema";
 
 export default function Home() {
+    const handleSignin = async ({username, password}) => {
+        console.log(username, password)
+        
+    }
+
     return (
         <>
             <Head>
@@ -30,42 +35,55 @@ export default function Home() {
                         />
                     </div>
                     <h1>Welcome back!</h1>
-                    <div className={loginstyles.formWrapper}>
-                        <form
-                            className={loginstyles.loginForm}
-                            action="/"
-                            method="post"
-                        >
-                           <Input
-                                id="user"
-                                label="User name"
-                                name="user"
-                                type="text"
-                                background="white"
-                                placeholder="Please enter your user name"
-                                autoComplete="off"
-                                required
-                            />
-                            <Input
-                                id="password"
-                                label="Password"
-                                name="password"
-                                type="password"
-                                background="white"
-                                placeholder="Please enter your user password"
-                                autoComplete="off"
-                                required
-                            />
-                            <div className={loginstyles.crFormCta}>
-                                <input
-                                    type="submit"
-                                    value="Sign in"
-                                    className={loginstyles.defaultButton}
-                                />
-                            </div>
-                        </form>
-                        <p><Link href="/forgot">Forgot password?</Link></p>
-                    </div>
+                    <Formik 
+                        initialValues={{ username: "", password: "" }}
+                        validationSchema={validationSchema.loginSchema}
+                        onSubmit={handleSignin}>
+                        {({touched, errors, handleBlur, handleChange}) => {
+                            return (
+                                <div className={loginstyles.formWrapper}>
+                                    <Form
+                                        className={loginstyles.loginForm}
+                                    >
+                                        <Input
+                                            id="username"
+                                            label="User name"
+                                            name="username"
+                                            type="text"
+                                            background="white"
+                                            placeholder="Please enter your user name"
+                                            autoComplete="off"
+                                            error={touched.username && errors?.username}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            required
+                                        />
+                                        <Input
+                                            id="password"
+                                            label="Password"
+                                            name="password"
+                                            type="password"
+                                            background="white"
+                                            placeholder="Please enter your user password"
+                                            autoComplete="off"
+                                            error={touched.password && errors?.password}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            required
+                                        />
+                                        <div className={loginstyles.crFormCta}>
+                                            <input
+                                                type="submit"
+                                                value="Sign in"
+                                                className={loginstyles.defaultButton}
+                                            />
+                                        </div>
+                                    </Form>
+                                    <p><Link href="/forgot">Forgot password?</Link></p>
+                                </div>
+                            )
+                        }}
+                    </Formik>
                 </div>
             </main>
         </>
