@@ -4,11 +4,10 @@ import { withIronSessionApiRoute } from 'iron-session/next'
 import { sessionOptions } from '../../lib/session'
 
 async function handler(req, res) {
-    const client = await clientPromise
-    const db = client.db('next-dash')
-    const { username, password } = await req.body
-
     try {
+        const client = await clientPromise
+        const db = client.db('next-dash')
+        const { username, password } = await req.body
         const oneUser = await db.collection('Users').find({ username, password }).toArray()
         if (!oneUser.length) {
             res.status(401).json({message: 'Login failed'})
