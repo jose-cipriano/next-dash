@@ -5,13 +5,23 @@ import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 import loginstyles from '../styles/Common.module.css'
 import Input from '../components/common/form/input'
-import { Formik, Form } from "formik";
-import { validationSchema } from "../utils/schema";
+import { Formik, Form } from 'formik'
+import { validationSchema } from '../utils/schema'
+import useSWR from 'swr'
+import fetchJson from '../lib/fetchJson'
+import { API_ENDPOINTS } from '../utils/api-endpoints'
 
 export default function Home() {
-    const handleSignin = async ({username, password}) => {
-        console.log(username, password)
-        
+    const { data: user, mutate: mutateUser } = useSWR('/api/user')
+
+    const handleSignin = async ({ username, password }) => {
+        mutateUser(
+            await fetchJson(API_ENDPOINTS.LOGIN, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({username, password}),
+            }),
+        )
     }
 
     return (
