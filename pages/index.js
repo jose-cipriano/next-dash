@@ -23,7 +23,8 @@ export default function Home() {
             }),
         )
     }
-
+    console.log('process env', process.env.NEXT_PUBLIC_SESSION_PWD)
+    console.log('process env mongo', process.env.NEXT_PUBLIC_MONGODB_URI)
     return (
         <>
             <Head>
