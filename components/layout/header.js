@@ -19,6 +19,7 @@ const Header = () => {
             false
         )
         router.push('/')
+        window.location.reload()
     }
     return (
         <>
