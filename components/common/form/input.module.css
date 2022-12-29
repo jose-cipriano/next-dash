@@ -28,9 +28,9 @@
 }
 
 .error {
-	margin: .3rem 0 .5rem 0;
-    padding: 0 .8rem;
-    font-size: 1.1rem !important;
+	margin: 0rem 0 .5rem 0;
+    padding: 0.1rem 0 0 .8rem;
+    font-size: 1rem !important;
     font-weight: normal;
     color: var(--color-red);
     min-height: 14px;
@@ -40,7 +40,7 @@
 .styledError {
 	position: absolute;
     right: 0.8rem;
-    top: 1.2rem;
+    top: 1rem;
     height: 1.6rem;
     width: 1.6rem;
     cursor: pointer;
