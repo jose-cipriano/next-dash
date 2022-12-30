@@ -108,3 +108,8 @@
   border-width: 2px;
   background: #fff;
 }
+
+.mainErr {
+  margin: 0;
+  color: var(--color-red);
+}
