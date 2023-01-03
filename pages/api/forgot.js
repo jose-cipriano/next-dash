@@ -43,8 +43,8 @@ async function handler(req, res) {
                         },
                     ],
                     from: {
-                        email: 'sergio.pinilos.dev@gmail.com',
-                        name: 'Sergio',
+                        email: 'no-reply@257defi.com',
+                        name: '257DeFi',
                     },
                 },
             },
