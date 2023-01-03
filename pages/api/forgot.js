@@ -11,11 +11,11 @@ async function handler(req, res) {
         const { username } = await req.body
         const oneUser = await db.collection('Users').find({ username }).toArray()
         if (!oneUser.length) {
-            res.status(401).json({ message: 'No Username' })
+            res.status(200).json({ success: false, message: 'Invalid Username' })
         }
 
-        const token = jwt.sign({ username: username}, 'next-dash', {expiresIn: '30m'});
-        const currentDomain = process.env.NEXT_PUBLIC_DOMAIN;
+        const token = jwt.sign({ username: username }, 'next-dash', { expiresIn: '30m' })
+        const currentDomain = process.env.NEXT_PUBLIC_DOMAIN
 
         request.post(
             {

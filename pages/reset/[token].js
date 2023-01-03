@@ -10,6 +10,8 @@ import { API_ENDPOINTS } from '../../utils/api-endpoints'
 import fetchJson from '../../lib/fetchJson'
 import { useRouter } from 'next/router'
 import { decode } from 'jsonwebtoken'
+import { toast } from 'react-toastify'
+import Spinner from '../../components/common/spinner'
 
 export default function ResetPassword() {
     const router = useRouter()
@@ -17,17 +19,24 @@ export default function ResetPassword() {
     const [expired, setExpired] = useState(false)
     const [notMatch, setNotMatch] = useState(false)
     const [username, setUsername] = useState('')
+    const [status, setStatus] = useState('idle')
+
     const handleReset = async ({ password, confirmPwd }) => {
         if (password !== confirmPwd) {
             console.log("password doesn't match")
             setNotMatch(true)
             return
         }
+        setStatus('pending')
 
         await fetchJson(API_ENDPOINTS.RESET, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ password, username }),
+        }).then((res) => {
+            toast(res.message)
+            setStatus('resolve')
+            return
         })
     }
     useEffect(() => {
@@ -114,16 +123,20 @@ export default function ResetPassword() {
                                         required
                                     />
                                     <div className={loginstyles.crFormCta}>
-                                        <input
-                                            type="submit"
-                                            value={`${
-                                                notMatch
-                                                    ? "Password doesn't match"
-                                                    : 'Reset password'
-                                            }`}
-                                            className={loginstyles.defaultButton}
-                                            disabled={notMatch}
-                                        />
+                                        {status === 'pending' ? (
+                                            <Spinner />
+                                        ) : (
+                                            <input
+                                                type="submit"
+                                                value={`${
+                                                    notMatch
+                                                        ? "Password doesn't match"
+                                                        : 'Reset password'
+                                                }`}
+                                                className={loginstyles.defaultButton}
+                                                disabled={notMatch}
+                                            />
+                                        )}
                                     </div>
                                 </form>
                                 <p>

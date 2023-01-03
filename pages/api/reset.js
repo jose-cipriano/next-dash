@@ -11,21 +11,21 @@ async function handler(req, res) {
         const users = db.collection('Users')
         const oneUser = await users.find({ username }).toArray()
         if (!oneUser.length) {
-            res.status(401).json({ message: 'No Username' })
+            res.status(200).json({ success: true, message: 'Invalid Credential' })
         } else {
-            const filter = {username: username}
+            const filter = { username: username }
             const updateDoc = {
                 $set: {
-                    password: password
-                }
+                    password: password,
+                },
             }
-            await users.updateOne(filter, updateDoc);
+            await users.updateOne(filter, updateDoc)
         }
 
-        res.status(200).json({ success: true })
+        res.status(200).json({ success: true, message: 'Password has Successfully Updated' })
     } catch (error) {
         res.status(500).json({ message: error.message })
-    } 
+    }
 }
 
 export default withIronSessionApiRoute(handler, sessionOptions)
