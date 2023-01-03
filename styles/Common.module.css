@@ -86,6 +86,7 @@
 
 .crFormCta {
   margin: 0;
+  height: 35px;
 }
 /* Tabs */
 
@@ -107,4 +108,9 @@
   border-color: #aaa;
   border-width: 2px;
   background: #fff;
+}
+
+.mainErr {
+  margin: 0;
+  color: var(--color-red);
 }

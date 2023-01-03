@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import LoginLayout from '../components/layout/layoutblank'
 import Head from 'next/head'
 import Image from 'next/image'
@@ -10,16 +11,26 @@ import { validationSchema } from '../utils/schema'
 import useSWR from 'swr'
 import fetchJson from '../lib/fetchJson'
 import { API_ENDPOINTS } from '../utils/api-endpoints'
-
+import Spinner from '../components/common/spinner'
+import { toast } from 'react-toastify'
 export default function Home() {
     const { data: user, mutate: mutateUser } = useSWR('/api/user')
-
+    const [status, setStatus] = useState('idle')
     const handleSignin = async ({ username, password }) => {
+        setStatus('pending')
         mutateUser(
             await fetchJson(API_ENDPOINTS.LOGIN, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({username, password}),
+                body: JSON.stringify({ username, password }),
+            }).then((res) => {
+                if (!res.success) {
+                    toast(res.message)
+                    setStatus('resolve')
+                } else {
+                    setStatus('resolve')
+                    window.location.reload()
+                }
             }),
         )
     }
@@ -45,16 +56,15 @@ export default function Home() {
                         />
                     </div>
                     <h1>Welcome back!</h1>
-                    <Formik 
-                        initialValues={{ username: "", password: "" }}
+                    <Formik
+                        initialValues={{ username: '', password: '' }}
                         validationSchema={validationSchema.loginSchema}
-                        onSubmit={handleSignin}>
-                        {({touched, errors, handleBlur, handleChange}) => {
+                        onSubmit={handleSignin}
+                    >
+                        {({ touched, errors, handleBlur, handleChange }) => {
                             return (
                                 <div className={loginstyles.formWrapper}>
-                                    <Form
-                                        className={loginstyles.loginForm}
-                                    >
+                                    <Form className={loginstyles.loginForm}>
                                         <Input
                                             id="username"
                                             label="User name"
@@ -82,18 +92,24 @@ export default function Home() {
                                             required
                                         />
                                         <div className={loginstyles.crFormCta}>
-                                            <input
-                                                type="submit"
-                                                value="Sign in"
-                                                className={loginstyles.defaultButton}
-                                            />
+                                            {status === 'pending' ? (
+                                                <Spinner />
+                                            ) : (
+                                                <input
+                                                    type="submit"
+                                                    value="Sign in"
+                                                    className={loginstyles.defaultButton}
+                                                />
+                                            )}
                                         </div>
                                     </Form>
-                                    <p><Link href="/forgot">Forgot password?</Link></p>
                                 </div>
                             )
                         }}
                     </Formik>
+                    <p>
+                        <Link href="/forgot">Forgot password?</Link>
+                    </p>
                 </div>
             </main>
         </>
@@ -101,9 +117,9 @@ export default function Home() {
 }
 
 Home.getLayout = function getLayout(home) {
-  return (
-    <>
-      <LoginLayout>{home}</LoginLayout>
-    </>
-  )
+    return (
+        <>
+            <LoginLayout>{home}</LoginLayout>
+        </>
+    )
 }
