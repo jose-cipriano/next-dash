@@ -16,7 +16,9 @@ import { toast } from 'react-toastify'
 export default function Home() {
     const { data: user, mutate: mutateUser } = useSWR('/api/user')
     const [status, setStatus] = useState('idle')
+    const [err, setErr] = useState(null)
     const handleSignin = async ({ username, password }) => {
+        setErr(null)
         setStatus('pending')
         mutateUser(
             await fetchJson(API_ENDPOINTS.LOGIN, {
@@ -26,8 +28,10 @@ export default function Home() {
             }).then((res) => {
                 if (!res.success) {
                     toast(res.message)
+                    setErr(res.message)
                     setStatus('resolve')
                 } else {
+                    setErr(null)
                     setStatus('resolve')
                     window.location.reload()
                 }
@@ -73,8 +77,11 @@ export default function Home() {
                                             background="white"
                                             placeholder="Please enter your user name"
                                             autoComplete="off"
-                                            error={touched.username && errors?.username}
-                                            onChange={handleChange}
+                                            error={(touched.username && errors?.username) || err}
+                                            onChange={(...args) => {
+                                                setErr(null)
+                                                handleChange(...args)
+                                            }}
                                             onBlur={handleBlur}
                                             required
                                         />
@@ -86,8 +93,11 @@ export default function Home() {
                                             background="white"
                                             placeholder="Please enter your user password"
                                             autoComplete="off"
-                                            error={touched.password && errors?.password}
-                                            onChange={handleChange}
+                                            error={(touched.password && errors?.password) || err}
+                                            onChange={(...args) => {
+                                                setErr(null)
+                                                handleChange(...args)
+                                            }}
                                             onBlur={handleBlur}
                                             required
                                         />
