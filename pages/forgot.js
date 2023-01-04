@@ -13,6 +13,7 @@ import Spinner from '../components/common/spinner'
 
 const ForgotPass = () => {
     const [status, setStatus] = useState('idle')
+    const [err, setErr] = useState(null)
     const handleForgot = async ({ username }) => {
         setStatus('pending')
         await fetchJson(API_ENDPOINTS.FORGOT, {
@@ -22,6 +23,7 @@ const ForgotPass = () => {
         }).then((res) => {
             if (!res.success) {
                 toast(res.message)
+                setErr(res.message)
                 setStatus('resolve')
             } else {
                 setStatus('resolve')
@@ -63,8 +65,11 @@ const ForgotPass = () => {
                                                 background="white"
                                                 placeholder="Please enter your user name"
                                                 autoComplete="off"
-                                                error={touched.username && errors?.username}
-                                                onChange={handleChange}
+                                                error={(touched.username && errors?.username) || err}
+                                                onChange={(...args)=> {
+                                                    setErr(null)
+                                                    handleChange(...args)
+                                                }}
                                                 onBlur={handleBlur}
                                                 required
                                             />

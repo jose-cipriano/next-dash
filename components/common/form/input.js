@@ -15,7 +15,7 @@ const Input = ({
     let wrapperStyle = { border: border }
     let labelErrorStyle
 
-    if (error) {
+    if (!!error) {
         wrapperStyle = {
             border: '1px solid var(--color-red)',
         }
