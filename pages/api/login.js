@@ -6,7 +6,7 @@ import { sessionOptions } from '../../lib/session'
 async function handler(req, res) {
     try {
         const client = await clientPromise
-        const db = client.db('next-dash')
+        const db = client.db('Next-Dash')
         const { username, password } = await req.body
         const oneUser = await db.collection('Users').find({ username, password }).toArray()
         if (!oneUser.length) {
