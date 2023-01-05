@@ -12,7 +12,7 @@ async function handler(req, res) {
         if (!oneUser.length) {
             res.status(200).json({ success: false, message: 'Invalid credentials' })
         } else {
-            if (oneUser.password !== password) {
+            if (oneUser[0].password !== password) {
                 res.status(200).json({ success: false, message: 'Invalid Password' })
             }
         }
