@@ -8,9 +8,13 @@ async function handler(req, res) {
         const client = await clientPromise
         const db = client.db('Next-Dash')
         const { username, password } = await req.body
-        const oneUser = await db.collection('Users').find({ username, password }).toArray()
+        const oneUser = await db.collection('Users').find({ username }).toArray()
         if (!oneUser.length) {
             res.status(200).json({ success: false, message: 'Invalid credentials' })
+        } else {
+            if (oneUser.password !== password) {
+                res.status(200).json({ success: false, message: 'Invalid Password' })
+            }
         }
 
         const user = { isLoggedIn: true }

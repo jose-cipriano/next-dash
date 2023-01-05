@@ -16,9 +16,12 @@ import { toast } from 'react-toastify'
 export default function Home() {
     const { data: user, mutate: mutateUser } = useSWR('/api/user')
     const [status, setStatus] = useState('idle')
-    const [err, setErr] = useState(null)
+    const [usernameErr, setUsernameErr] = useState(null)
+    const [pwdErr, setPwdErr] = useState(null)
+
     const handleSignin = async ({ username, password }) => {
-        setErr(null)
+        setUsernameErr(null)
+        setPwdErr(null)
         setStatus('pending')
         mutateUser(
             await fetchJson(API_ENDPOINTS.LOGIN, {
@@ -27,11 +30,19 @@ export default function Home() {
                 body: JSON.stringify({ username, password }),
             }).then((res) => {
                 if (!res.success) {
+                    if (res.message === 'Invalid Password') {
+                        setPwdErr(res.message)
+                        setUsernameErr(null)
+                        toast(res.message)
+                        setStatus('resolve')
+                        return
+                    }
                     toast(res.message)
-                    setErr(res.message)
+                    setUsernameErr(res.message)
                     setStatus('resolve')
                 } else {
-                    setErr(null)
+                    setUsernameErr(null)
+                    setPwdErr(null)
                     setStatus('resolve')
                     window.location.reload()
                 }
@@ -77,9 +88,12 @@ export default function Home() {
                                             background="white"
                                             placeholder="Please enter your user name"
                                             autoComplete="off"
-                                            error={(touched.username && errors?.username) || err}
+                                            error={
+                                                (touched.username && errors?.username) ||
+                                                usernameErr
+                                            }
                                             onChange={(...args) => {
-                                                setErr(null)
+                                                setUsernameErr(null)
                                                 handleChange(...args)
                                             }}
                                             onBlur={handleBlur}
@@ -93,9 +107,13 @@ export default function Home() {
                                             background="white"
                                             placeholder="Please enter your user password"
                                             autoComplete="off"
-                                            error={(touched.password && errors?.password) || err}
+                                            error={
+                                                (touched.password && errors?.password) ||
+                                                usernameErr ||
+                                                pwdErr
+                                            }
                                             onChange={(...args) => {
-                                                setErr(null)
+                                                setPwdErr(null)
                                                 handleChange(...args)
                                             }}
                                             onBlur={handleBlur}
