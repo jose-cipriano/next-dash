@@ -3,5 +3,6 @@ export const API_ENDPOINTS = {
     LOGOUT: '/api/logout',
     ME: '/api/user',
     FORGOT: '/api/forgot',
-    RESET: '/api/reset'
+    RESET: '/api/reset',
+    ADD_LOCATION: '/api/location/add'
 }
