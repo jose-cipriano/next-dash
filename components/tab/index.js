@@ -1,8 +1,9 @@
 import Input from '../common/form/input'
 import { Form, Formik } from 'formik'
 import Tabstyles from '../../styles/Tabs.module.css'
+import Spinner from '../common/spinner'
 
-export const ActionTab = ({ initialValues, validationSchema, onSubmit, name, label }) => {
+export const ActionTab = ({ initialValues, validationSchema, onSubmit, name, label, status }) => {
     return (
         <Formik
             initialValues={initialValues}
@@ -26,7 +27,15 @@ export const ActionTab = ({ initialValues, validationSchema, onSubmit, name, lab
                             required
                         />
                         <div className={Tabstyles.crFormCta}>
-                            <input type="submit" value="ADD" className={Tabstyles.defaultButton} />
+                            {status === 'pending' ? (
+                                <Spinner />
+                            ) : (
+                                <input
+                                    type="submit"
+                                    value="ADD"
+                                    className={Tabstyles.defaultButton}
+                                />
+                            )}
                         </div>
                     </Form>
                 )

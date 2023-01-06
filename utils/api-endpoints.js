@@ -4,5 +4,8 @@ export const API_ENDPOINTS = {
     ME: '/api/user',
     FORGOT: '/api/forgot',
     RESET: '/api/reset',
-    ADD_LOCATION: '/api/location/add'
+    ADD_COUNTRY: '/api/location/add/country',
+    ADD_CITY: '/api/location/add/city',
+    ADD_AREA: '/api/location/add/area',
+    ADD_STREET: '/api/location/add/street',
 }

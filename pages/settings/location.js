@@ -1,31 +1,64 @@
 import { useState } from 'react'
+import { toast } from 'react-toastify'
 import { ActionTab } from '../../components/tab'
 import fetchJson from '../../lib/fetchJson'
 import Tabstyles from '../../styles/Tabs.module.css'
 import { API_ENDPOINTS } from '../../utils/api-endpoints'
 import { validationSchema } from '../../utils/schema'
 
-export default function Location () {
+export default function Location() {
     const [toggleState, setToggleState] = useState(1)
     const toggleTab = (id) => {
         setToggleState(id)
     }
-
+    const [status, setStatus] = useState('idle')
     const addCountry = async ({ country }) => {
+        setStatus('pending')
         await fetchJson(API_ENDPOINTS.ADD_COUNTRY, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ country }),
+        }).then((res) => {
+            toast(res.message)
+            setStatus('resolve')
+            return
         })
     }
-    const addCity = ({ city }) => {
-        console.log(city)
+    const addCity = async ({ city }) => {
+        setStatus('pending')
+        await fetchJson(API_ENDPOINTS.ADD_CITY, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ city }),
+        }).then((res) => {
+            toast(res.message)
+            setStatus('resolve')
+            return
+        })
     }
-    const addArea = ({ area }) => {
-        console.log(area)
+    const addArea = async ({ area }) => {
+        setStatus('pending')
+        await fetchJson(API_ENDPOINTS.ADD_AREA, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ area }),
+        }).then((res) => {
+            toast(res.message)
+            setStatus('resolve')
+            return
+        })
     }
-    const addStreet = ({ street }) => {
-        console.log(street)
+    const addStreet = async ({ street }) => {
+        setStatus('pending')
+        await fetchJson(API_ENDPOINTS.ADD_STREET, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ street }),
+        }).then((res) => {
+            toast(res.message)
+            setStatus('resolve')
+            return
+        })
     }
     return (
         <div className={Tabstyles.location}>
@@ -86,6 +119,7 @@ export default function Location () {
                     onSubmit={addCountry}
                     name="country"
                     label="country"
+                    status={status}
                 />
             )}
             {toggleState === 2 && (
@@ -95,6 +129,7 @@ export default function Location () {
                     onSubmit={addCity}
                     name="city"
                     label="City"
+                    status={status}
                 />
             )}
             {toggleState === 3 && (
@@ -104,6 +139,7 @@ export default function Location () {
                     onSubmit={addArea}
                     name="area"
                     label="Area"
+                    status={status}
                 />
             )}
             {toggleState === 4 && (
@@ -113,6 +149,7 @@ export default function Location () {
                     onSubmit={addStreet}
                     name="street"
                     label="Street"
+                    status={status}
                 />
             )}
         </div>
