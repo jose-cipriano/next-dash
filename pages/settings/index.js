@@ -2,9 +2,9 @@ import { useState } from 'react'
 import Layout from '../../components/layout/Layout'
 import styles from '../../styles/Layout.module.css'
 import Tabstyles from '../../styles/Tabs.module.css'
-import { Location } from './location'
-import { Category } from './category'
-import { Service } from './service'
+import Location from './location'
+import Category from './category'
+import Service from './service'
 
 export default function Settings() {
     const [toggleState, setToggleState] = useState(1)

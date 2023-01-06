@@ -1,4 +1,4 @@
-export default Service = () => {
+export default function Service () {
     return (
         <div>
             <div>Service</div>

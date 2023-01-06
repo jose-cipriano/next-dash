@@ -5,7 +5,7 @@ import Tabstyles from '../../styles/Tabs.module.css'
 import { API_ENDPOINTS } from '../../utils/api-endpoints'
 import { validationSchema } from '../../utils/schema'
 
-export default Location = () => {
+export default function Location () {
     const [toggleState, setToggleState] = useState(1)
     const toggleTab = (id) => {
         setToggleState(id)
