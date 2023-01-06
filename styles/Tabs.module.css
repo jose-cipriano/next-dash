@@ -96,6 +96,7 @@
     transition: all 0.2s ease-in-out;
     text-transform: uppercase;
     font-family: 'Montserrat', sans-serif;
+    height: 35px;
 }
 .defaultButton:hover {
     background-color: var(--color-green-dark);
@@ -111,6 +112,10 @@
     margin: 1rem;
 }
 
+.form > div > div > input {
+    height: 35px;
+}
+
 .form div:last-child {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
