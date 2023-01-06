@@ -1,16 +1,22 @@
 import { useState } from 'react'
 import { ActionTab } from '../../components/tab'
+import fetchJson from '../../lib/fetchJson'
 import Tabstyles from '../../styles/Tabs.module.css'
+import { API_ENDPOINTS } from '../../utils/api-endpoints'
 import { validationSchema } from '../../utils/schema'
 
-export const Location = () => {
+export default function Location () {
     const [toggleState, setToggleState] = useState(1)
     const toggleTab = (id) => {
         setToggleState(id)
     }
 
-    const addCountry = ({ country }) => {
-        console.log(country)
+    const addCountry = async ({ country }) => {
+        await fetchJson(API_ENDPOINTS.ADD_COUNTRY, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ country }),
+        })
     }
     const addCity = ({ city }) => {
         console.log(city)
