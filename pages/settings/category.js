@@ -1,4 +1,4 @@
-export const Category = () => {
+export default Category = () => {
     return (
         <div>
             <div>Category</div>
