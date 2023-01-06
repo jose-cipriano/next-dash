@@ -1,4 +1,3 @@
-import request from 'request'
 import clientPromise from '../../lib/mongodb'
 import { withIronSessionApiRoute } from 'iron-session/next'
 import { sessionOptions } from '../../lib/session'
@@ -6,7 +5,7 @@ import { sessionOptions } from '../../lib/session'
 async function handler(req, res) {
     const client = await clientPromise
     try {
-        const db = client.db('next-dash')
+        const db = client.db('Next-Dash')
         const { username, password } = await req.body
         const users = db.collection('Users')
         const oneUser = await users.find({ username }).toArray()

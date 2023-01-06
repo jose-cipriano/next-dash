@@ -7,14 +7,14 @@ import jwt from 'jsonwebtoken'
 async function handler(req, res) {
     try {
         const client = await clientPromise
-        const db = client.db('next-dash')
+        const db = client.db('Next-Dash')
         const { username } = await req.body
         const oneUser = await db.collection('Users').find({ username }).toArray()
         if (!oneUser.length) {
             res.status(200).json({ success: false, message: 'Invalid Username' })
         }
 
-        const token = jwt.sign({ username: username }, 'next-dash', { expiresIn: '30m' })
+        const token = jwt.sign({ username: username }, 'Next-Dash', { expiresIn: '30m' })
         const currentDomain = process.env.NEXT_PUBLIC_DOMAIN
 
         request.post(
