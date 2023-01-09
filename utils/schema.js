@@ -30,4 +30,7 @@ export const validationSchema = {
     streetSchema: yup.object({
         street: yup.string('Enter the Street').required('Street is required'),
     }),
+    changeLocationSchema: yup.object({
+        name: yup.string('Enter the new location').required('Location is required'),
+    })
 }
