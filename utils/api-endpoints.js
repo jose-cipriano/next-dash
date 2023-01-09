@@ -20,4 +20,8 @@ export const API_ENDPOINTS = {
     EDIT_CITY: '/api/location/edit/city',
     EDIT_AREA: '/api/location/edit/area',
     EDIT_STREET: '/api/location/edit/street',
+    ADD_CATEGORY: '/api/category/add/category',
+    GET_CATEGORY: 'api/category/get/category',
+    EDIT_CATEGORY: 'api/category/edit/category',
+    DELETE_CATEGORY: 'api/category/delete/category',
 }
