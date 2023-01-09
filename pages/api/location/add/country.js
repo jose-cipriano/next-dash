@@ -13,7 +13,7 @@ async function handler(req, res) {
                 message: `${country} already exist in the database`,
             })
         } else {
-            await countries.insertOne({ name: country })
+            await countries.insertOne({ name: country, category: 'country' })
         }
 
         res.status(200).json({ success: true, message: 'successfully added' })

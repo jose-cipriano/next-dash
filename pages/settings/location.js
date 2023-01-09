@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { ActionTab } from '../../components/tab'
 import fetchJson from '../../lib/fetchJson'
 import Tabstyles from '../../styles/Tabs.module.css'
 import { API_ENDPOINTS } from '../../utils/api-endpoints'
 import { validationSchema } from '../../utils/schema'
+import { TableRecord } from '../../components/table'
 
 export default function Location() {
     const [toggleState, setToggleState] = useState(1)
@@ -12,6 +13,39 @@ export default function Location() {
         setToggleState(id)
     }
     const [status, setStatus] = useState('idle')
+    const [records, setRecords] = useState(null)
+
+    const getRecords = async (toggleState) => {
+        let apiEndpoint
+        switch (toggleState) {
+            case 1:
+                apiEndpoint = API_ENDPOINTS.GET_COUNTRY;
+                break;
+            case 2:
+                apiEndpoint = API_ENDPOINTS.GET_CITY;
+                break;
+            case 3:
+                apiEndpoint = API_ENDPOINTS.GET_AREA;
+                break;
+            case 4:
+                apiEndpoint = API_ENDPOINTS.GET_STREET;
+                break;
+            default:
+                break;
+        }
+        await fetchJson(apiEndpoint, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        }).then((res)=> {
+            if (res.success) {
+                setRecords(res.data)
+            } else {
+                toast(res.message)
+                return []
+            }
+        })
+    }
+
     const addCountry = async ({ country }) => {
         setStatus('pending')
         await fetchJson(API_ENDPOINTS.ADD_COUNTRY, {
@@ -21,6 +55,7 @@ export default function Location() {
         }).then((res) => {
             toast(res.message)
             setStatus('resolve')
+            getRecords(1)
             return
         })
     }
@@ -33,6 +68,7 @@ export default function Location() {
         }).then((res) => {
             toast(res.message)
             setStatus('resolve')
+            getRecords(2)
             return
         })
     }
@@ -45,6 +81,7 @@ export default function Location() {
         }).then((res) => {
             toast(res.message)
             setStatus('resolve')
+            getRecords(3)
             return
         })
     }
@@ -57,9 +94,16 @@ export default function Location() {
         }).then((res) => {
             toast(res.message)
             setStatus('resolve')
+            getRecords(4)
             return
         })
     }
+    
+
+    useEffect(()=> {
+        getRecords(toggleState)
+    }, [toggleState])
+
     return (
         <div className={Tabstyles.location}>
             <div className={Tabstyles.TabsBlock}>
@@ -152,6 +196,7 @@ export default function Location() {
                     status={status}
                 />
             )}
+            <TableRecord records={records} toggleState={toggleState} getRecords={getRecords}/>
         </div>
     )
 }
