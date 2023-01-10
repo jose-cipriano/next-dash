@@ -36,4 +36,7 @@ export const validationSchema = {
     categorySchema: yup.object({
         category: yup.string('Enter the category').required('Category is required'),
     }),
+    serviceSchema: yup.object({
+        service: yup.string('Enter the service').required('Service is required'),
+    }),
 }

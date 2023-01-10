@@ -6,6 +6,7 @@ import Tabstyles from '../../styles/Tabs.module.css'
 import { API_ENDPOINTS } from '../../utils/api-endpoints'
 import { validationSchema } from '../../utils/schema'
 import { TableRecord } from '../../components/table'
+import Spinner from '../../components/common/spinner'
 
 export default function Location() {
     const [toggleState, setToggleState] = useState(1)
@@ -14,8 +15,9 @@ export default function Location() {
     }
     const [status, setStatus] = useState('idle')
     const [records, setRecords] = useState(null)
-
+    const [loading, setLoading] = useState(false)
     const getRecords = async (toggleState) => {
+        setLoading(true)
         let apiEndpoint
         switch (toggleState) {
             case 1:
@@ -39,8 +41,10 @@ export default function Location() {
         }).then((res) => {
             if (res.success) {
                 setRecords(res.data)
+                setLoading(false)
             } else {
                 toast(res.message)
+                setLoading(false)
                 return []
             }
         })
@@ -255,14 +259,18 @@ export default function Location() {
                     status={status}
                 />
             )}
-            <TableRecord
-                records={records}
-                toggleState={toggleState}
-                getRecords={getRecords}
-                handleDelete={handleDelete}
-                handleEdit={handleEdit}
-                title="Change location"
-            />
+            {loading ? (
+                <Spinner />
+            ) : (
+                <TableRecord
+                    records={records}
+                    toggleState={toggleState}
+                    getRecords={getRecords}
+                    handleDelete={handleDelete}
+                    handleEdit={handleEdit}
+                    title="Change location"
+                />
+            )}
         </div>
     )
 }

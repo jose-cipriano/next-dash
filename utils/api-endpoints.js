@@ -24,4 +24,8 @@ export const API_ENDPOINTS = {
     GET_CATEGORY: 'api/category/get/category',
     EDIT_CATEGORY: 'api/category/edit/category',
     DELETE_CATEGORY: 'api/category/delete/category',
+    ADD_SERVICE: '/api/service/add/service',
+    GET_SERVICE: 'api/service/get/service',
+    EDIT_SERVICE: 'api/service/edit/service',
+    DELETE_SERVICE: 'api/service/delete/service',
 }

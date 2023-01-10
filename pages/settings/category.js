@@ -12,6 +12,7 @@ import { TableRecord } from '../../components/table'
 export default function Category() {
     const [status, setStatus] = useState('idle')
     const [records, setRecords] = useState(null)
+    const [loading, setLoading] = useState(false)
 
     const addCategory = async ({ category }) => {
         setStatus('pending')
@@ -28,14 +29,17 @@ export default function Category() {
     }
 
     const getRecords = async () => {
+        setLoading(true)
         await fetchJson(API_ENDPOINTS.GET_CATEGORY, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         }).then((res) => {
             if (res.success) {
                 setRecords(res.data)
+                setLoading(false)
             } else {
                 toast(res.message)
+                setLoading(false)
                 return []
             }
         })
@@ -109,14 +113,17 @@ export default function Category() {
                     }}
                 </Formik>
             </div>
-
-            <TableRecord
-                records={records}
-                getRecords={getRecords}
-                handleDelete={deleteCategory}
-                handleEdit={editCategory}
-                title="Change Category"
-            />
+            {loading ? (
+                <Spinner />
+            ) : (
+                <TableRecord
+                    records={records}
+                    getRecords={getRecords}
+                    handleDelete={deleteCategory}
+                    handleEdit={editCategory}
+                    title="Change Category"
+                />
+            )}
         </div>
     )
 }
