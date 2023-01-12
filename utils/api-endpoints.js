@@ -28,4 +28,8 @@ export const API_ENDPOINTS = {
     GET_SERVICE: 'api/service/get/service',
     EDIT_SERVICE: 'api/service/edit/service',
     DELETE_SERVICE: 'api/service/delete/service',
+    ADD_ANNOUNCEMENT: '/api/announcement/add/announcement',
+    GET_ANNOUNCEMENT: 'api/announcement/get/announcement',
+    EDIT_ANNOUNCEMENT: 'api/announcement/edit/announcement',
+    DELETE_ANNOUNCEMENT: 'api/announcement/delete/announcement',
 }

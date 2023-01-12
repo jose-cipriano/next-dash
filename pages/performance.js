@@ -1,8 +1,8 @@
 import Layout from '../components/layout/Layout'
+import { AnnouncementProvider } from '../contexts/announcement'
 import styles from '../styles/Layout.module.css'
 
-
-export default function Performance () {
+export default function Performance() {
     return (
         <div className={styles.PageContainer}>
             <div className={styles.FullPageGrid}>
@@ -10,15 +10,15 @@ export default function Performance () {
                     <legend>Perfromance</legend>
                     <p>Content</p>
                 </fieldset>
-            </div>    
+            </div>
         </div>
     )
 }
 
 Performance.getLayout = function getLayout(page) {
-  return (
-    <Layout>
-      {page}
-    </Layout>
-  )
+    return (
+        <AnnouncementProvider>
+            <Layout>{page}</Layout>
+        </AnnouncementProvider>
+    )
 }
