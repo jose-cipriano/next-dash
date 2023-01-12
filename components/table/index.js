@@ -7,7 +7,7 @@ import Modal from '../common/modal'
 import tableStyles from './table.module.css'
 import loginstyles from '../../styles/Common.module.css'
 
-export const TableRecord = ({ records, handleDelete, handleEdit, title }) => {
+export const TableRecord = ({ records, handleDelete, handleEdit, title, addBtn, addedAction }) => {
     const [showModal, setShowModal] = useState(-1)
 
     if (records?.length === 0) return <div>No record</div>
@@ -25,7 +25,7 @@ export const TableRecord = ({ records, handleDelete, handleEdit, title }) => {
                 {records?.map((record, index) => {
                     return (
                         <tr key={record._id}>
-                            <td>{index}</td>
+                            <td>{index + 1}</td>
                             <td>{record.name}</td>
                             <td>
                                 <Button
@@ -34,7 +34,12 @@ export const TableRecord = ({ records, handleDelete, handleEdit, title }) => {
                                 >
                                     Delete
                                 </Button>
-                                <Button onClick={() => setShowModal(record._id)}>Edit</Button>
+                                <Button
+                                    onClick={() => setShowModal(record._id)}
+                                    style={{ marginRight: '1rem' }}
+                                >
+                                    Edit
+                                </Button>
                                 <Modal
                                     onClose={() => setShowModal(-1)}
                                     show={showModal === record._id}
@@ -79,6 +84,15 @@ export const TableRecord = ({ records, handleDelete, handleEdit, title }) => {
                                         }}
                                     </Formik>
                                 </Modal>
+                                {addBtn && (
+                                    <Button
+                                        onClick={() => {
+                                            addedAction(record.name)
+                                        }}
+                                    >
+                                        {addBtn}
+                                    </Button>
+                                )}
                             </td>
                         </tr>
                     )

@@ -1,8 +1,8 @@
 import Layout from '../components/layout/Layout'
+import { AnnouncementProvider } from '../contexts/announcement'
 import styles from '../styles/Layout.module.css'
 
-
-export default function Tickets () {
+export default function Tickets() {
     return (
         <div className={styles.PageContainer}>
             <div className={styles.PageGrid}>
@@ -14,15 +14,15 @@ export default function Tickets () {
                     <legend>Summary</legend>
                     <p>System offline</p>
                 </fieldset>
-            </div>    
+            </div>
         </div>
     )
 }
 
 Tickets.getLayout = function getLayout(page) {
-  return (
-    <Layout>
-      {page}
-    </Layout>
-  )
+    return (
+        <AnnouncementProvider>
+            <Layout>{page}</Layout>
+        </AnnouncementProvider>
+    )
 }

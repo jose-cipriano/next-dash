@@ -5,6 +5,7 @@ import Tabstyles from '../../styles/Tabs.module.css'
 import Location from './location'
 import Category from './category'
 import Service from './service'
+import { AnnouncementProvider } from '../../contexts/announcement'
 
 export default function Settings() {
     const [toggleState, setToggleState] = useState(1)
@@ -65,5 +66,9 @@ export default function Settings() {
 }
 
 Settings.getLayout = function getLayout(page) {
-    return <Layout>{page}</Layout>
+    return (
+        <AnnouncementProvider>
+            <Layout>{page}</Layout>
+        </AnnouncementProvider>
+    )
 }

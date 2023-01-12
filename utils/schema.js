@@ -39,4 +39,7 @@ export const validationSchema = {
     serviceSchema: yup.object({
         service: yup.string('Enter the service').required('Service is required'),
     }),
+    announcementSchema: yup.object({
+        announcement: yup.string('Enter the announcement').required('Announcement is required'),
+    }),
 }
