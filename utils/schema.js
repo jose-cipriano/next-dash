@@ -42,4 +42,17 @@ export const validationSchema = {
     announcementSchema: yup.object({
         announcement: yup.string('Enter the announcement').required('Announcement is required'),
     }),
+    accountSchema: yup.object({
+        email: yup
+            .string('Enter the email')
+            .email('Enter a valid email')
+            .required('Email is required'),
+        password: yup.string('Enter the password').required('Password is required'),
+        name: yup.string('Enter the name').required('Name is required'),
+        surname: yup.string('Enter the surname').required('Surname is required'),
+        birthday: yup.date('Enter the birthday').required('Birthday is required'),
+        consent: yup.string('Enter the consent').required('Consent is required'),
+        role: yup.string('Enter the role').required('Role is required'),
+        limit: yup.string('Enter the limit').required('Limit is required'),
+    }),
 }
