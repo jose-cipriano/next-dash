@@ -8,18 +8,19 @@ import Tabstyles from '../../styles/Tabs.module.css'
 import { API_ENDPOINTS } from '../../utils/api-endpoints'
 import { validationSchema } from '../../utils/schema'
 import { TableRecord } from '../../components/table'
+import { useAnnouncement } from '../../contexts/announcement'
 
-export default function Category() {
+export default function Announcement() {
     const [status, setStatus] = useState('idle')
     const [records, setRecords] = useState(null)
     const [loading, setLoading] = useState(false)
-
-    const addCategory = async ({ category }) => {
+    const { setAnnouncement } = useAnnouncement()
+    const addAnnouncement = async ({ announcement }) => {
         setStatus('pending')
-        await fetchJson(API_ENDPOINTS.ADD_CATEGORY, {
+        await fetchJson(API_ENDPOINTS.ADD_ANNOUNCEMENT, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ category }),
+            body: JSON.stringify({ announcement }),
         }).then((res) => {
             toast(res.message)
             setStatus('resolve')
@@ -30,7 +31,7 @@ export default function Category() {
 
     const getRecords = async () => {
         setLoading(true)
-        await fetchJson(API_ENDPOINTS.GET_CATEGORY, {
+        await fetchJson(API_ENDPOINTS.GET_ANNOUNCEMENT, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         }).then((res) => {
@@ -45,8 +46,8 @@ export default function Category() {
         })
     }
 
-    const deleteCategory = async (id) => {
-        await fetchJson(API_ENDPOINTS.DELETE_CATEGORY, {
+    const deleteAnnouncement = async (id) => {
+        await fetchJson(API_ENDPOINTS.DELETE_ANNOUNCEMENT, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id }),
@@ -57,8 +58,8 @@ export default function Category() {
         })
     }
 
-    const editCategory = async ({ name }, recordId) => {
-        await fetchJson(API_ENDPOINTS.EDIT_CATEGORY, {
+    const editAnnouncement = async ({ name }, recordId) => {
+        await fetchJson(API_ENDPOINTS.EDIT_ANNOUNCEMENT, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, recordId }),
@@ -77,22 +78,22 @@ export default function Category() {
         <div className={Tabstyles.location}>
             <div className={Tabstyles.TabsBlock}>
                 <Formik
-                    initialValues={{ category: '' }}
-                    validationSchema={validationSchema.categorySchema}
-                    onSubmit={addCategory}
+                    initialValues={{ announcement: '' }}
+                    validationSchema={validationSchema.announcementSchema}
+                    onSubmit={addAnnouncement}
                 >
                     {({ touched, errors, handleBlur, handleChange }) => {
                         return (
                             <Form className={Tabstyles.form}>
                                 <Input
-                                    id="category"
-                                    label="category"
-                                    name="category"
+                                    id="announcement"
+                                    label="announcement"
+                                    name="announcement"
                                     type="text"
                                     background="white"
-                                    placeholder="Add Category"
+                                    placeholder="Add Announcement"
                                     autoComplete="off"
-                                    error={touched.category && errors?.category}
+                                    error={touched.announcement && errors?.announcement}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     required
@@ -119,9 +120,11 @@ export default function Category() {
                 <TableRecord
                     records={records}
                     getRecords={getRecords}
-                    handleDelete={deleteCategory}
-                    handleEdit={editCategory}
-                    title="Change Category"
+                    handleDelete={deleteAnnouncement}
+                    handleEdit={editAnnouncement}
+                    title="Change Announcement"
+                    addBtn="Set"
+                    addedAction={setAnnouncement}
                 />
             )}
         </div>

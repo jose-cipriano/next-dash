@@ -30,7 +30,29 @@ export const validationSchema = {
     streetSchema: yup.object({
         street: yup.string('Enter the Street').required('Street is required'),
     }),
-    changeLocationSchema: yup.object({
-        name: yup.string('Enter the new location').required('Location is required'),
-    })
+    changeNameSchema: yup.object({
+        name: yup.string('Enter the new name').required('Name is required'),
+    }),
+    categorySchema: yup.object({
+        category: yup.string('Enter the category').required('Category is required'),
+    }),
+    serviceSchema: yup.object({
+        service: yup.string('Enter the service').required('Service is required'),
+    }),
+    announcementSchema: yup.object({
+        announcement: yup.string('Enter the announcement').required('Announcement is required'),
+    }),
+    accountSchema: yup.object({
+        email: yup
+            .string('Enter the email')
+            .email('Enter a valid email')
+            .required('Email is required'),
+        password: yup.string('Enter the password').required('Password is required'),
+        name: yup.string('Enter the name').required('Name is required'),
+        surname: yup.string('Enter the surname').required('Surname is required'),
+        birthday: yup.date('Enter the birthday').required('Birthday is required'),
+        consent: yup.string('Enter the consent').required('Consent is required'),
+        role: yup.string('Enter the role').required('Role is required'),
+        limit: yup.string('Enter the limit').required('Limit is required'),
+    }),
 }

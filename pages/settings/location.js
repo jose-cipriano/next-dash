@@ -6,6 +6,7 @@ import Tabstyles from '../../styles/Tabs.module.css'
 import { API_ENDPOINTS } from '../../utils/api-endpoints'
 import { validationSchema } from '../../utils/schema'
 import { TableRecord } from '../../components/table'
+import Spinner from '../../components/common/spinner'
 
 export default function Location() {
     const [toggleState, setToggleState] = useState(1)
@@ -14,33 +15,36 @@ export default function Location() {
     }
     const [status, setStatus] = useState('idle')
     const [records, setRecords] = useState(null)
-
+    const [loading, setLoading] = useState(false)
     const getRecords = async (toggleState) => {
+        setLoading(true)
         let apiEndpoint
         switch (toggleState) {
             case 1:
-                apiEndpoint = API_ENDPOINTS.GET_COUNTRY;
-                break;
+                apiEndpoint = API_ENDPOINTS.GET_COUNTRY
+                break
             case 2:
-                apiEndpoint = API_ENDPOINTS.GET_CITY;
-                break;
+                apiEndpoint = API_ENDPOINTS.GET_CITY
+                break
             case 3:
-                apiEndpoint = API_ENDPOINTS.GET_AREA;
-                break;
+                apiEndpoint = API_ENDPOINTS.GET_AREA
+                break
             case 4:
-                apiEndpoint = API_ENDPOINTS.GET_STREET;
-                break;
+                apiEndpoint = API_ENDPOINTS.GET_STREET
+                break
             default:
-                break;
+                break
         }
         await fetchJson(apiEndpoint, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
-        }).then((res)=> {
+        }).then((res) => {
             if (res.success) {
                 setRecords(res.data)
+                setLoading(false)
             } else {
                 toast(res.message)
+                setLoading(false)
                 return []
             }
         })
@@ -98,9 +102,68 @@ export default function Location() {
             return
         })
     }
-    
 
-    useEffect(()=> {
+    const handleDelete = async (id) => {
+        let apiEndpoint
+        switch (toggleState) {
+            case 1:
+                apiEndpoint = API_ENDPOINTS.DELETE_COUNTRY
+                break
+            case 2:
+                apiEndpoint = API_ENDPOINTS.DELETE_CITY
+                break
+            case 3:
+                apiEndpoint = API_ENDPOINTS.DELETE_AREA
+                break
+            case 4:
+                apiEndpoint = API_ENDPOINTS.DELETE_STREET
+                break
+            default:
+                break
+        }
+
+        await fetchJson(apiEndpoint, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id }),
+        }).then((res) => {
+            toast(res.message)
+            getRecords(toggleState)
+            return
+        })
+    }
+
+    const handleEdit = async ({ name }, recordId) => {
+        let apiEndpoint
+        switch (toggleState) {
+            case 1:
+                apiEndpoint = API_ENDPOINTS.EDIT_COUNTRY
+                break
+            case 2:
+                apiEndpoint = API_ENDPOINTS.EDIT_CITY
+                break
+            case 3:
+                apiEndpoint = API_ENDPOINTS.EDIT_AREA
+                break
+            case 4:
+                apiEndpoint = API_ENDPOINTS.EDIT_STREET
+                break
+            default:
+                break
+        }
+
+        await fetchJson(apiEndpoint, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, recordId }),
+        }).then((res) => {
+            toast(res.message)
+            getRecords(toggleState)
+            return
+        })
+    }
+
+    useEffect(() => {
         getRecords(toggleState)
     }, [toggleState])
 
@@ -196,7 +259,18 @@ export default function Location() {
                     status={status}
                 />
             )}
-            <TableRecord records={records} toggleState={toggleState} getRecords={getRecords}/>
+            {loading ? (
+                <Spinner />
+            ) : (
+                <TableRecord
+                    records={records}
+                    toggleState={toggleState}
+                    getRecords={getRecords}
+                    handleDelete={handleDelete}
+                    handleEdit={handleEdit}
+                    title="Change location"
+                />
+            )}
         </div>
     )
 }

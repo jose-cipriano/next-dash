@@ -23,31 +23,38 @@ export default function Home() {
         setUsernameErr(null)
         setPwdErr(null)
         setStatus('pending')
-        mutateUser(
-            await fetchJson(API_ENDPOINTS.LOGIN, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password }),
-            }).then((res) => {
-                if (!res.success) {
-                    if (res.message === 'Invalid Password') {
-                        setPwdErr(res.message)
-                        setUsernameErr(null)
+        try {
+            mutateUser(
+                await fetchJson(API_ENDPOINTS.LOGIN, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password }),
+                }).then((res) => {
+                    if (!res.success) {
+                        if (res.message === 'Invalid Password') {
+                            setPwdErr(res.message)
+                            setUsernameErr(null)
+                            toast(res.message)
+                            setStatus('resolve')
+                            return
+                        }
                         toast(res.message)
+                        setUsernameErr(res.message)
                         setStatus('resolve')
-                        return
+                    } else {
+                        setUsernameErr(null)
+                        setPwdErr(null)
+                        setStatus('resolve')
+                        window.location.reload()
                     }
-                    toast(res.message)
-                    setUsernameErr(res.message)
-                    setStatus('resolve')
-                } else {
-                    setUsernameErr(null)
-                    setPwdErr(null)
-                    setStatus('resolve')
-                    window.location.reload()
-                }
-            }),
-        )
+                }),
+            )
+        } catch (err) {
+            console.log(err)
+        }
+    }
+    if (!user) {
+        return null
     }
 
     return (

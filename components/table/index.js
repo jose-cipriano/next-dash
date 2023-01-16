@@ -1,8 +1,5 @@
-import { Formik, Form, FieldArray } from 'formik'
+import { Formik, Form } from 'formik'
 import { useState } from 'react'
-import { toast } from 'react-toastify'
-import fetchJson from '../../lib/fetchJson'
-import { API_ENDPOINTS } from '../../utils/api-endpoints'
 import { validationSchema } from '../../utils/schema'
 import { Button } from '../common/button'
 import Input from '../common/form/input'
@@ -10,68 +7,8 @@ import Modal from '../common/modal'
 import tableStyles from './table.module.css'
 import loginstyles from '../../styles/Common.module.css'
 
-export const TableRecord = ({ records, toggleState, getRecords }) => {
+export const TableRecord = ({ records, handleDelete, handleEdit, title, addBtn, addedAction }) => {
     const [showModal, setShowModal] = useState(-1)
-    const handleDelete = async (id) => {
-        let apiEndpoint
-        switch (toggleState) {
-            case 1:
-                apiEndpoint = API_ENDPOINTS.DELETE_COUNTRY
-                break
-            case 2:
-                apiEndpoint = API_ENDPOINTS.DELETE_CITY
-                break
-            case 3:
-                apiEndpoint = API_ENDPOINTS.DELETE_AREA
-                break
-            case 4:
-                apiEndpoint = API_ENDPOINTS.DELETE_STREET
-                break
-            default:
-                break
-        }
-
-        await fetchJson(apiEndpoint, {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id }),
-        }).then((res) => {
-            toast(res.message)
-            getRecords(toggleState)
-            return
-        })
-    }
-    const handleChangeLocation = async ({name}, recordId) => {
-        let apiEndpoint
-        switch (toggleState) {
-            case 1:
-                apiEndpoint = API_ENDPOINTS.EDIT_COUNTRY
-                break
-            case 2:
-                apiEndpoint = API_ENDPOINTS.EDIT_CITY
-                break
-            case 3:
-                apiEndpoint = API_ENDPOINTS.EDIT_AREA
-                break
-            case 4:
-                apiEndpoint = API_ENDPOINTS.EDIT_STREET
-                break
-            default:
-                break
-        }
-
-        await fetchJson(apiEndpoint, {
-            method: 'PUT',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({name, recordId})
-        }).then((res) => {
-            toast(res.message)
-            setShowModal(-1)
-            getRecords(toggleState)
-            return
-        })
-
-    }
 
     if (records?.length === 0) return <div>No record</div>
 
@@ -88,7 +25,7 @@ export const TableRecord = ({ records, toggleState, getRecords }) => {
                 {records?.map((record, index) => {
                     return (
                         <tr key={record._id}>
-                            <td>{index}</td>
+                            <td>{index + 1}</td>
                             <td>{record.name}</td>
                             <td>
                                 <Button
@@ -97,17 +34,23 @@ export const TableRecord = ({ records, toggleState, getRecords }) => {
                                 >
                                     Delete
                                 </Button>
-                                <Button onClick={() => setShowModal(record._id)}>Edit</Button>
+                                <Button
+                                    onClick={() => setShowModal(record._id)}
+                                    style={{ marginRight: '1rem' }}
+                                >
+                                    Edit
+                                </Button>
                                 <Modal
                                     onClose={() => setShowModal(-1)}
                                     show={showModal === record._id}
-                                    title="Change location"
+                                    title={title}
                                 >
                                     <Formik
                                         initialValues={{ name: record.name }}
-                                        validationSchema={validationSchema.changeLocationSchema}
-                                        onSubmit={(args)=> {
-                                            handleChangeLocation({...args}, record._id)
+                                        validationSchema={validationSchema.changeNameSchema}
+                                        onSubmit={(args) => {
+                                            handleEdit({ ...args }, record._id)
+                                            setShowModal(-1)
                                         }}
                                     >
                                         {({ touched, errors, handleBlur, handleChange }) => {
@@ -132,7 +75,7 @@ export const TableRecord = ({ records, toggleState, getRecords }) => {
                                                     <div className={tableStyles.crFormCta}>
                                                         <input
                                                             type="submit"
-                                                            value="Confirm Edit"
+                                                            value="Change"
                                                             className={loginstyles.defaultButton}
                                                         />
                                                     </div>
@@ -141,6 +84,15 @@ export const TableRecord = ({ records, toggleState, getRecords }) => {
                                         }}
                                     </Formik>
                                 </Modal>
+                                {addBtn && (
+                                    <Button
+                                        onClick={() => {
+                                            addedAction(record.name)
+                                        }}
+                                    >
+                                        {addBtn}
+                                    </Button>
+                                )}
                             </td>
                         </tr>
                     )
